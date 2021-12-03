@@ -24,12 +24,18 @@ func GetUpdate() []test.Test {
 	}
 	defer resp.Body.Close()
 
+	// Print the HTTP Status Code and Status Name
+	log.Println("HTTP Response Status:", resp.StatusCode, http.StatusText(resp.StatusCode))
+
 	result := &[]test.Test{}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
 		log.Printf("Decoding json went wrong: %s\n", err)
-		return *result
+		if e, ok := err.(*json.SyntaxError); ok {
+			log.Printf("syntax error at byte offset %d", e.Offset)
+		}
+		log.Printf("Response was: %q", resp.Body)
 	}
 
 	return *result
