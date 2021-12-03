@@ -6,11 +6,11 @@ import (
 )
 
 type Test struct {
-	ID			int			`json:"afspraakId"`
+	//ID			int			`json:"afspraakId"`
 	Status		string		`json:"afspraakStatus"`
 	FinalResult	string		`json:"uiteindelijkeUitslag"`
-	Date		time.Time	`json:"afnamedatum"`
-	Results		[]Result	`json:"labuitslagen"`
+	//Date		time.Time	`json:"afnamedatum"`
+	//Results		[]Result	`json:"labuitslagen"`
 }
 
 type Result struct {
