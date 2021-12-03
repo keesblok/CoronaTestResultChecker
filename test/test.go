@@ -26,9 +26,13 @@ type Result struct {
 func GetInterestingMessage(tests []Test) string {
 	var message string
 
-	lastTest := tests[len(tests)-1]
-	if lastTest.Status == "AFGEROND" {
-		message = "The result from your last test is: " + lastTest.FinalResult
+	if len(tests) > 0 {
+		lastTest := tests[len(tests)-1]
+		if lastTest.Status == "AFGEROND" {
+			message = "The result from your last test is: " + lastTest.FinalResult
+		}
+	} else {
+		message = "There are no tests visible. Maybe something is wrong?"
 	}
 
 	log.Printf("Got new message: %s", message)
