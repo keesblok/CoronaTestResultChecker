@@ -10,7 +10,7 @@ import (
 )
 
 func GetUpdate() []test.Test {
-	req, err := http.NewRequest("GET", "https://user-api.coronatest.nl/uitslagen/", nil)
+	req, err := http.NewRequest("GET", "https://user-api.coronatest.nl/uitslagen/", http.NoBody)
 	if err != nil {
 		log.Printf("Could not create new request: %v", err)
 	}
