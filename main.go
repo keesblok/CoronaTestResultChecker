@@ -45,6 +45,6 @@ func main() {
 
 	bot.Start(ctx, stopNotifier, stopServer)
 
-	network.StartServer(stopServer)
+	//network.StartServer(stopServer)
 }
 
