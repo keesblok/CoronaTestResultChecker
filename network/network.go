@@ -19,7 +19,8 @@ func GetUpdate() []test.Test {
 	log.Printf("The provided bearer is: %s", bearer)
 
 	req.Header.Add("authorization", bearer)
-	req.Header.Add("Accept", "application/json")
+	req.Header.Add("accept", "application/json, text/plain, */*")
+	req.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36")
 	log.Printf("Current headers are: %v", req.Header.Get("authorization"))
 
 	client := &http.Client{}
