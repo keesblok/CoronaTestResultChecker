@@ -15,7 +15,11 @@ func GetUpdate() []test.Test {
 		log.Printf("Could not create new request: %v", err)
 	}
 
-	req.Header.Add("Authorization", os.Getenv("BEARER"))
+	bearer := os.Getenv("BEARER")
+	log.Printf("The provided bearer is: %s", bearer)
+
+	req.Header.Add("Authorization", bearer)
+	req.Header.Add("Accept", "application/json")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
