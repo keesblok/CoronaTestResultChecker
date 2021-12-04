@@ -2,15 +2,14 @@ package test
 
 import (
 	"log"
-	"time"
 )
 
 type Test struct {
-	//ID			int			`json:"afspraakId"`
+	ID			int			`json:"afspraakId"`
 	Status		string		`json:"afspraakStatus"`
 	FinalResult	string		`json:"uiteindelijkeUitslag"`
 	//Date		time.Time	`json:"afnamedatum"`
-	//Results		[]Result	`json:"labuitslagen"`
+	Results		[]Result	`json:"labuitslagen"`
 }
 
 type Result struct {
@@ -18,8 +17,8 @@ type Result struct {
 	Result		string		`json:"uitslag"`
 	TestType	string		`json:"coronatestType"`
 	Accuracy	int			`json:"betrouwbaarheidScore"`
-	ResultDate	time.Time	`json:"uitslagdatum"`
-	SentDate	time.Time	`json:"verstuurddatum"`
+	//ResultDate	time.Time	`json:"uitslagdatum"`
+	//SentDate	time.Time	`json:"verstuurddatum"`
 	Sent		bool		`json:"verstuurd"`
 }
 

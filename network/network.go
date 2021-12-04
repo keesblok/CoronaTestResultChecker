@@ -11,10 +11,10 @@ import (
 	"net/http"
 )
 
-func GetUpdate() []test.Test {
-	req, err := http.NewRequest("GET", "https://user-api.coronatest.nl/uitslagen/", http.NoBody)
+func GetUpdate() ([]test.Test, error) {
+		req, err := http.NewRequest("GET", "https://user-api.coronatest.nl/uitslagen/", http.NoBody)
 	if err != nil {
-		log.Printf("Could not create new request: %v", err)
+		return nil, fmt.Errorf("could not create new request: %w", err)
 	}
 
 	bearer := os.Getenv("BEARER")
@@ -24,25 +24,25 @@ func GetUpdate() []test.Test {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Printf("Getting results from coronatest.nl went wrong: %v", err)
+		return nil, fmt.Errorf("getting results from coronatest.nl went wrong: %w", err)
 	}
 	defer resp.Body.Close()
 
-	// Print the HTTP Status Code and Status Name
-	log.Println("HTTP Response Status:", resp.StatusCode, http.StatusText(resp.StatusCode))
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("request was unsuccessfull (HTTP %d %s)", resp.StatusCode, http.StatusText(resp.StatusCode))
+	}
 
 	result := &[]test.Test{}
-
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
-		log.Printf("Decoding json went wrong: %s\n", err)
 		if e, ok := err.(*json.SyntaxError); ok {
 			log.Printf("syntax error at byte offset %d", e.Offset)
 		}
 		log.Printf("Response was: %q", resp.Body)
+		return nil, fmt.Errorf("decoding json went wrong: %w", err)
 	}
 
-	return *result
+	return *result, err
 }
 
 // formatRequest generates ascii representation of a request

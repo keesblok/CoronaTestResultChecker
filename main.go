@@ -5,6 +5,7 @@ import (
 	"Corona_Test/telegram"
 	"Corona_Test/test"
 	"context"
+	"fmt"
 	"log"
 	"os/signal"
 	"syscall"
@@ -21,7 +22,6 @@ func main() {
 	defer ticker.Stop()
 
 	stopNotifier := make(chan bool)
-	stopServer := make(chan bool)
 
 	go func() {
 		for {
@@ -29,10 +29,14 @@ func main() {
 			case <- stopNotifier:
 				return
 			case <- ticker.C:
-				result := network.GetUpdate()
-				message := test.GetInterestingMessage(result)
+				result, err := network.GetUpdate()
+				if err != nil {
+					errString := fmt.Errorf("getting the update went wrong: %w", err)
+					log.Print(errString)
 
-				if message != "" {
+					bot.SendMessage(errString.Error())
+					return
+				} else if message := test.GetInterestingMessage(result); message != "" {
 					err := bot.SendMessage(message)
 					if err != nil {
 						log.Printf("Sending the message went wrong: %s\n", err)
@@ -43,8 +47,6 @@ func main() {
 		}
 	}()
 
-	bot.Start(ctx, stopNotifier, stopServer)
-
-	//network.StartServer(stopServer)
+	bot.Start(ctx, stopNotifier)
 }
 
